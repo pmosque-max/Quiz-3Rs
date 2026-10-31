@@ -282,7 +282,8 @@
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
+    // URL directa y operativa de Google Apps Script:
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHpIG7Wt31DfNM66ASkNvkFXX9772RYbSOyLwzvHFRETnotrNXb5LEpV2hvLoMLaia/exec";
 
     const quizItems = [
       { id: 1, text: "1. Turning off the tap while brushing teeth.", category: "Reduce", cue: "You reduce clean water waste by closing the tap while brushing." },
@@ -390,16 +391,20 @@
         percentage: percentage
       };
 
-      if (APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbzHpIG7Wt31DfNM66ASkNvkFXX9772RYbSOyLwzvHFRETnotrNXb5LEpV2hvLoMLaia/exec")) {
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        })
-        .then(() => alert("¡Tus respuestas fueron enviadas y guardadas exitosamente!"))
-        .catch(err => console.error("Error al enviar:", err));
-      }
+      // Envío de datos por método POST a Apps Script
+      fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        alert("¡Tus respuestas fueron enviadas y guardadas exitosamente!");
+      })
+      .catch(err => {
+        console.error("Error al enviar:", err);
+        alert("Hubo un problema al enviar las notas. Revisa tu conexión.");
+      });
     }
 
     document.addEventListener('DOMContentLoaded', renderQuiz);
