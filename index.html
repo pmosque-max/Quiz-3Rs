@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 3Rs: Reduce, Reuse, Recycle - Learning & Quiz</title>
+  <style>
+    :root {
+      --bg-main: #f0fdf4;
+      --card-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --primary: #15803d;
+      --primary-hover: #166534;
+      --reduce-color: #0284c7;
+      --reuse-color: #d97706;
+      --recycle-color: #16a34a;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-main); color: var(--text-dark); padding: 20px 14px; line-height: 1.5; }
+
+    .container { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+    header {
+      text-align: center;
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    header h1 { font-size: 1.8rem; color: var(--primary); margin-bottom: 6px; }
+    header p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .r-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .r-card {
+      border-radius: 10px;
+      padding: 16px;
+      border-left: 6px solid transparent;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .r-reduce { border-color: var(--reduce-color); }
+    .r-reuse { border-color: var(--reuse-color); }
+    .r-recycle { border-color: var(--recycle-color); }
+
+    .r-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    .r-reduce .r-badge { color: var(--reduce-color); }
+    .r-reuse .r-badge { color: var(--reuse-color); }
+    .r-recycle .r-badge { color: var(--recycle-color); }
+
+    .r-def { font-size: 0.9rem; color: #334155; }
+    .r-example {
+      font-size: 0.85rem;
+      color: #475569;
+      font-style: italic;
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .student-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 600px) { .student-fields { grid-template-columns: 1fr; } }
+
+    label { font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 4px; display: block; }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    input[type="text"]:focus, select:focus { border-color: var(--primary); }
+
+    .quiz-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+    .quiz-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .quiz-item.correct { border-color: var(--primary); background: #f0fdf4; }
+    .quiz-item.incorrect { border-color: #dc2626; background: #fef2f2; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .quiz-text { font-size: 0.95rem; font-weight: 600; color: var(--text-dark); flex: 1; }
+
+    .quiz-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button.btn-audio {
+      background: #e2e8f0;
+      color: #1e293b;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    button.btn-audio:hover { background: #cbd5e1; }
+
+    .quiz-select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .quiz-feedback {
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: none;
+    }
+
+    .submit-container {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .btn-submit:hover { background: var(--primary-hover); }
+
+    .score-banner {
+      display: none;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>♻️ Environmental Care: The 3Rs</h1>
+      <p>Content and Language Integrated Learning (CLIL) - English & Environmental Science</p>
+    </header>
+
+    <!-- IDENTIFICACIÓN DEL ESTUDIANTE -->
+    <section class="card">
+      <h2>👤 Student Information / Datos del Estudiante</h2>
+      <div class="student-fields">
+        <div>
+          <label for="studentName">Full Name / Nombre Completo:</label>
+          <input type="text" id="studentName" placeholder="e.g., Juan David Gómez" required>
+        </div>
+        <div>
+          <label for="studentGrade">Grade / Grado:</label>
+          <select id="studentGrade" required>
+            <option value="">-- Select Grade / Seleccione Grado --</option>
+            <option value="6A">6° A</option>
+            <option value="6B">6° B</option>
+            <option value="7A">7° A</option>
+            <option value="7B">7° B</option>
+            <option value="8A">8° A</option>
+            <option value="8B">8° B</option>
+            <option value="9A">9° A</option>
+            <option value="9B">9° B</option>
+            <option value="10A">10° A</option>
+            <option value="11A">11° A</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- VOCABULARIO BASE -->
+    <section class="card">
+      <h2>📚 Key Vocabulary: The 3Rs</h2>
+      <div class="r-grid">
+        <div class="r-card r-reduce">
+          <div class="r-badge">📉 Reduce</div>
+          <p class="r-def">To use less of something in order to create less waste and conserve resources.</p>
+          <div class="r-example">"We reduce waste by turning off the lights and saving clean water."</div>
+          <button class="btn-audio" type="button" onclick="speakText('Reduce. We reduce waste by turning off the lights and saving clean water.')">🔊 Listen</button>
+        </div>
+
+        <div class="r-card r-reuse">
+          <div class="r-badge">🔄 Reuse</div>
+          <p class="r-def">To use an item again for the same or a new purpose instead of throwing it away.</p>
+          <div class="r-example">"We reuse glass jars to store pencils or dry food."</div>
+          <button class="btn-audio" type="button" onclick="speakText('Reuse. We reuse glass jars to store pencils or dry food.')">🔊 Listen</button>
+        </div>
+
+        <div class="r-card r-recycle">
+          <div class="r-badge">♻️ Recycle</div>
+          <p class="r-def">To collect and transform waste materials into new usable objects in factories.</p>
+          <div class="r-example">"We recycle cardboard boxes and plastic to make new notebooks."</div>
+          <button class="btn-audio" type="button" onclick="speakText('Recycle. We recycle cardboard boxes and plastic to make new notebooks.')">🔊 Listen</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- EJERCICIO PRÁCTICO -->
+    <section class="card">
+      <h2>📝 Practice Exercise: Classify the Actions (12 Items)</h2>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:12px;">
+        Read each action and select whether it corresponds to <strong>Reduce</strong>, <strong>Reuse</strong>, or <strong>Recycle</strong>. You can click <strong>🔊 Listen Clue</strong> to hear a contextual sentence.
+      </p>
+
+      <div class="quiz-list" id="quizContainer"></div>
+
+      <div class="submit-container">
+        <button class="btn-submit" type="button" onclick="submitQuiz()">Check & Send Answers / Enviar Respuestas</button>
+        <div class="score-banner" id="scoreBanner"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
+
+    const quizItems = [
+      { id: 1, text: "1. Turning off the tap while brushing teeth.", category: "Reduce", cue: "You reduce clean water waste by closing the tap while brushing." },
+      { id: 2, text: "2. Using an old t-shirt as a cleaning cloth.", category: "Reuse", cue: "We can reuse old cotton clothes to clean the house." },
+      { id: 3, text: "3. Sorting aluminum cans into the green bin.", category: "Recycle", cue: "Factories can recycle aluminum cans into new metal products." },
+      { id: 4, text: "4. Bringing your own cloth bag to the market.", category: "Reduce", cue: "Using a cloth bag helps reduce the number of plastic bags we consume." },
+      { id: 5, text: "5. Making flower pots from plastic soda bottles.", category: "Reuse", cue: "Students can reuse soda bottles by planting flowers inside them." },
+      { id: 6, text: "6. Collecting cardboard boxes to make new paper.", category: "Recycle", cue: "Special machines recycle old cardboard boxes into fresh paper." },
+      { id: 7, text: "7. Walking or riding a bike instead of taking a car.", category: "Reduce", cue: "Riding a bicycle helps us reduce toxic gas emissions." },
+      { id: 8, text: "8. Giving your outgrown storybooks to younger kids.", category: "Reuse", cue: "You can reuse children's books by sharing them with younger cousins." },
+      { id: 9, text: "9. Placing crushed plastic caps in the collection bin.", category: "Recycle", cue: "Organizations recycle plastic caps to manufacture new plastic tools." },
+      { id: 10, text: "10. Printing documents on both sides of the sheet.", category: "Reduce", cue: "Double-sided printing helps us reduce our paper consumption." },
+      { id: 11, text: "11. Using an empty glass jar as a pencil holder.", category: "Reuse", cue: "Teachers often reuse glass containers to organize classroom pens." },
+      { id: 12, text: "12. Crushing glass bottles for molten glass production.", category: "Recycle", cue: "Industrial furnaces melt and recycle broken glass into clean bottles." }
+    ];
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = "";
+
+      quizItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.id = `item_${item.id}`;
+
+        div.innerHTML = `
+          <div class="quiz-header">
+            <span class="quiz-text">${item.text}</span>
+            <div class="quiz-actions">
+              <button class="btn-audio" type="button" onclick="speakText('${item.cue.replace(/'/g, "\\'")}')">
+                🔊 Listen Clue
+              </button>
+              <select class="quiz-select" id="select_${item.id}">
+                <option value="">-- Choose Category --</option>
+                <option value="Reduce">Reduce</option>
+                <option value="Reuse">Reuse</option>
+                <option value="Recycle">Recycle</option>
+              </select>
+            </div>
+          </div>
+          <div class="quiz-feedback" id="feedback_${item.id}"></div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function speakText(text) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function submitQuiz() {
+      const name = document.getElementById('studentName').value.trim();
+      const grade = document.getElementById('studentGrade').value;
+
+      if (!name) {
+        alert("Please enter your Full Name / Por favor ingrese su nombre completo.");
+        document.getElementById('studentName').focus();
+        return;
+      }
+      if (!grade) {
+        alert("Please select your Grade / Por favor seleccione su grado.");
+        document.getElementById('studentGrade').focus();
+        return;
+      }
+
+      let score = 0;
+
+      quizItems.forEach(item => {
+        const selectEl = document.getElementById(`select_${item.id}`);
+        const userChoice = selectEl.value;
+        const itemRow = document.getElementById(`item_${item.id}`);
+        const feedbackEl = document.getElementById(`feedback_${item.id}`);
+
+        feedbackEl.style.display = "block";
+
+        if (userChoice === item.category) {
+          score++;
+          itemRow.className = "quiz-item correct";
+          feedbackEl.innerHTML = `<span style="color:var(--primary);">✅ Correct! (${item.category})</span>`;
+        } else {
+          itemRow.className = "quiz-item incorrect";
+          feedbackEl.innerHTML = `<span style="color:#dc2626;">❌ Incorrect. Correct answer: <strong>${item.category}</strong></span>`;
+        }
+      });
+
+      const percentage = Math.round((score / quizItems.length) * 100);
+
+      const banner = document.getElementById('scoreBanner');
+      banner.style.display = "block";
+      banner.innerHTML = `
+        <strong>Assessment Complete!</strong><br>
+        Student: <strong>${name}</strong> | Grade: <strong>${grade}</strong><br>
+        Score: <strong>${score} / ${quizItems.length}</strong> (${percentage}%)
+      `;
+
+      const payload = {
+        name: name,
+        grade: grade,
+        score: score,
+        total: quizItems.length,
+        percentage: percentage
+      };
+
+      if (APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbzHpIG7Wt31DfNM66ASkNvkFXX9772RYbSOyLwzvHFRETnotrNXb5LEpV2hvLoMLaia/exec")) {
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        })
+        .then(() => alert("¡Tus respuestas fueron enviadas y guardadas exitosamente!"))
+        .catch(err => console.error("Error al enviar:", err));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderQuiz);
+  </script>
+</body>
+</html>
